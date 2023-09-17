@@ -5,7 +5,7 @@ import { TodoListItems } from './components/TodoListItems';
 import { AddTodoItemForm } from './components/AddTodoItem';
 import { StyledTodoWrapper } from './styled';
 import { TodoFilterBar } from './components/TodoFilterBar';
-import { useLoadTodos } from '@hooks/useLoadTodos';
+import { useTodos } from '@hooks/useTodos';
 
 export const MainPage = () => {
   return (
@@ -20,7 +20,7 @@ const AppTodoWrapper = () => {
 
   const status = useStateSelector((state) => state.status);
 
-  const { loadTodos } = useLoadTodos();
+  const { loadTodos } = useTodos();
 
   useEffect(() => {
     loadTodos();

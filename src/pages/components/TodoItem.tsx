@@ -1,4 +1,4 @@
-import { Todo } from '@core/todo';
+import { Todo } from '@core/models/todo';
 import { useStateSelector } from '@store/todoContext';
 
 interface TodoItemProps {
@@ -7,7 +7,6 @@ interface TodoItemProps {
 }
 
 export const TodoItem = ({ id, handleDoneChange }: TodoItemProps) => {
-  // handleDeleteTodo
   const item = useStateSelector((state) => state.itemsMap[id]);
 
   if (!item) {

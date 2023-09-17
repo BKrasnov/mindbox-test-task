@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import { Todo } from '@core/todo';
+import { TodoIndexedDb } from '@core/models/todoIndexedDb';
 
 // Библиотека для работы с IndexedDb. Давно хотел поработать с IndexedDB, поэтому решил попробовать)
 
@@ -12,7 +12,7 @@ const DATABASE_CONFIG = {
 };
 
 export class TodoDbDexie extends Dexie {
-  public readonly todos!: Table<Todo>;
+  public readonly todos!: Table<TodoIndexedDb>;
 
   constructor() {
     super(DATABASE_CONFIG.name);

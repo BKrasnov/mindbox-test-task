@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TodoService } from '@api/service/todoService';
 import { useUpdate } from '@store/todoContext';
-import { Todo } from '@core/todo';
+import { Todo } from '@core/models/todo';
 import { ArrowIcon } from '@theme/icons';
 import styled from '@emotion/styled';
 
@@ -34,7 +34,9 @@ export const AddTodoItemForm: FC<AddTodoItemFormProps> = ({ setIsShow, isShow })
       return {
         ...state,
         itemsMap: { ...state.itemsMap, [todoItem.id]: todoItem },
-        itemIds: [...state.itemIds, todoItem.id],
+        // Сортируется по ID. Да, костыльно, но изначально не предполагалось сортировать.
+        // Сделал, так как IndexedDb автоматически возращает отсортированную.
+        itemIds: [...state.itemIds, todoItem.id].sort(),
       };
     });
 

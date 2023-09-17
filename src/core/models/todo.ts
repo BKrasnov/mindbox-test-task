@@ -12,6 +12,8 @@ export class Todo {
   }
 }
 
+export type PartialTodoWithoutId = Partial<Omit<Todo, 'id'>>;
+
 /** Параметры, с необязательным полем isCompleted. */
 type InitTodoParams = Omit<Todo, 'isCompleted'> & {
   isCompleted?: boolean;

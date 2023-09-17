@@ -1,6 +1,6 @@
 import { useStateSelector, useUpdate } from '@store/todoContext';
 import { TodoItem } from './TodoItem';
-import { Todo } from '@core/todo';
+import { Todo } from '@core/models/todo';
 import { TodoService } from '@api/service/todoService';
 
 export const TodoListItems = () => {
@@ -26,7 +26,7 @@ export const TodoListItems = () => {
   return (
     <div>
       {itemsIds.map((id) => (
-        <TodoItem key={id} id={id} handleDoneChange={handleDoneChange} /> // handleDeleteTodo={handleDeleteTodo}
+        <TodoItem key={id} id={id} handleDoneChange={handleDoneChange} />
       ))}
     </div>
   );
