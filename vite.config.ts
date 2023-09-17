@@ -14,6 +14,7 @@ export default defineConfig({
       '@core': path.resolve(__dirname, './src/core'),
       '@api': path.resolve(__dirname, './src/api'),
       '@theme': path.resolve(__dirname, './src/theme'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
     },
   },
   plugins: [react()],
