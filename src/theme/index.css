@@ -16,3 +16,10 @@
   -webkit-text-size-adjust: 100%;
   background-color: #f2f2f6;
 }
+
+.arrow {
+  transform: rotate(270deg);
+}
+.arraow--hide {
+  transform: rotate(90deg);
+}
