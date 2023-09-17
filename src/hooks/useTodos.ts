@@ -1,6 +1,6 @@
 import { useUpdate, TodoFilterType } from '@store/todoContext';
 import { TodoService } from '@api/service/todoService';
-import { Todo } from '@core/todo';
+import { Todo } from '@core/models/todo';
 
 const FILTERS = {
   All: undefined,
@@ -9,7 +9,7 @@ const FILTERS = {
 };
 
 /** Хук для получения loadTodos function. */
-export const useLoadTodos = () => {
+export const useTodos = () => {
   const update = useUpdate();
 
   async function loadTodos(filter?: TodoFilterType) {
@@ -19,12 +19,10 @@ export const useLoadTodos = () => {
     try {
       const completedFilter = FILTERS[filter || 'All'];
       const todos = await TodoService.getTodos(completedFilter);
-
       todos.forEach((item) => {
         itemIds.push(item.id);
         itemsMap[item.id] = item;
       });
-
       update({
         status: 'success',
         itemIds,
@@ -38,8 +36,14 @@ export const useLoadTodos = () => {
     }
   }
 
+  async function deleteCompletedTodos() {
+    await TodoService.deleteCompletedTodos();
+    await loadTodos();
+  }
+
   return {
     loadTodos,
+    deleteCompletedTodos,
     update,
   };
 };
