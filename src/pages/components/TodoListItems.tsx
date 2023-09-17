@@ -24,10 +24,10 @@ export const TodoListItems = () => {
   };
 
   return (
-    <div>
+    <ul>
       {itemsIds.map((id) => (
         <TodoItem key={id} id={id} handleDoneChange={handleDoneChange} />
       ))}
-    </div>
+    </ul>
   );
 };

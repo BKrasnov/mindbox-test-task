@@ -1,4 +1,5 @@
 import { Todo } from '@core/models/todo';
+import styled from '@emotion/styled';
 import { useStateSelector } from '@store/todoContext';
 
 interface TodoItemProps {
@@ -14,9 +15,20 @@ export const TodoItem = ({ id, handleDoneChange }: TodoItemProps) => {
   }
 
   return (
-    <div key={id} style={item.isCompleted ? { textDecoration: 'line-through' } : undefined}>
-      <input type="checkbox" checked={item.isCompleted} onChange={() => handleDoneChange(item.id)} />
+    <StyledTodoItem key={id}>
+      <StyledInput type="checkbox" checked={item.isCompleted} onChange={() => handleDoneChange(item.id)} />
       {item.title}
-    </div>
+    </StyledTodoItem>
   );
 };
+
+export const StyledInput = styled.input({
+  borderRadius: '50%',
+  width: '20px',
+});
+
+export const StyledTodoItem = styled.li({
+  display: 'flex',
+  padding: '0.7rem',
+  gap: '0.7rem',
+});
