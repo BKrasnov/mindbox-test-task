@@ -1,12 +1,21 @@
 import { db } from '@api/db';
-import { Todo } from '@core/todo';
+import { TodoMapper } from '@core/mapper/TodoMapper';
+import { PartialTodoWithoutId, Todo } from '@core/models/todo';
+import { IS_COMPLETED_TODO, IS_NOT_COMPLETED_TODO } from '@core/models/todoIndexedDb';
 
 export namespace TodoService {
   /** Получить задачи. */
-  export async function getTodos(): Promise<Todo[]> {
+  export async function getTodos(completed?: boolean): Promise<Todo[]> {
     try {
-      const todos = await db.todos.toArray();
-      return todos;
+      const query =
+        completed === true
+          ? db.todos.where({ isCompleted: IS_COMPLETED_TODO })
+          : completed === false
+          ? db.todos.where({ isCompleted: IS_NOT_COMPLETED_TODO })
+          : db.todos;
+
+      const todos = await query.toArray();
+      return todos.map((todo) => TodoMapper.toTodo(todo));
     } catch (error) {
       throw Error(`Failed to get todos: ${error}`);
     }
@@ -15,22 +24,19 @@ export namespace TodoService {
   /** Создать задачу. */
   export async function createTodo(todo: Todo): Promise<void> {
     try {
-      await db.todos.add(todo);
+      await db.todos.add({ ...todo, isCompleted: todo.isCompleted ? IS_COMPLETED_TODO : IS_NOT_COMPLETED_TODO });
     } catch (error) {
       throw Error(`Failed to add ${todo.title}: ${error}`);
     }
   }
 
-  export async function updateTodo(id: string, updateData: Partial<Omit<Todo, 'id'>>) {
+  /** Обновить задачу. */
+  export async function updateTodo(id: string, updateData: PartialTodoWithoutId): Promise<void> {
     try {
       const todo = await db.todos.get(id);
 
       if (todo) {
-        const updatedTodo: Todo = {
-          ...todo,
-          ...updateData,
-        };
-
+        const updatedTodo = TodoMapper.toTodoIndexedDb(todo, updateData);
         await db.todos.put(updatedTodo);
       } else {
         throw Error(`Todo with ID ${id} not found`);
@@ -43,8 +49,7 @@ export namespace TodoService {
   /** Удалить завершенные задачи. */
   export async function deleteCompletedTodos(): Promise<void> {
     try {
-      // TODO: можно заюзаь getTodos с опшинами
-      const completedTodos = await db.todos.where({ isCompleted: true }).toArray();
+      const completedTodos = await getTodos(IS_COMPLETED_TODO && true);
       for (const todo of completedTodos) {
         await db.todos.delete(todo.id);
       }
