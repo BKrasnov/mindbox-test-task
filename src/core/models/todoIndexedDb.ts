@@ -1,4 +1,7 @@
-export type IndexDbFakeBoolean = 1 | 0;
+export const IS_COMPLETED_TODO = 1;
+export const IS_NOT_COMPLETED_TODO = 0;
+
+export type IndexDbFakeBoolean = typeof IS_COMPLETED_TODO | typeof IS_NOT_COMPLETED_TODO;
 
 /**
  * Тестовое задание почти сделано. Однако только сейчас узнал, что IndexedDB не поддерживает индексы для логических свойств.
