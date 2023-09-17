@@ -1,10 +1,11 @@
-import { useStateSelector, useUpdate } from '@store/todoContext';
+import { useStateSelector } from '@store/todoContext';
 import { TodoContext } from './components/TodoContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { TodoListItems } from './components/TodoListItems';
 import { AddTodoItemForm } from './components/AddTodoItem';
-import { TodoService } from '@api/service/todoService';
-import { Todo } from '@core/todo';
+import { StyledTodoWrapper } from './styled';
+import { TodoFilterBar } from './components/TodoFilterBar';
+import { useLoadTodos } from '@hooks/useLoadTodos';
 
 export const MainPage = () => {
   return (
@@ -15,37 +16,15 @@ export const MainPage = () => {
 };
 
 const AppTodoWrapper = () => {
+  const [isShow, setIsShow] = useState(true);
+
   const status = useStateSelector((state) => state.status);
 
-  const update = useUpdate();
-
-  async function loadTodos() {
-    const itemsMap: Record<string, Todo> = {};
-    const itemIds: Todo['id'][] = [];
-    try {
-      const todos = await TodoService.getTodos();
-
-      todos.forEach((item) => {
-        itemIds.push(item.id);
-        itemsMap[item.id] = item;
-      });
-
-      update({
-        status: 'success',
-        itemIds,
-        itemsMap,
-      });
-    } catch (error) {
-      console.error(error);
-      update({
-        status: 'error',
-      });
-    }
-  }
+  const { loadTodos } = useLoadTodos();
 
   useEffect(() => {
-    update({ status: 'loading' });
     loadTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderList = () => {
@@ -61,9 +40,10 @@ const AppTodoWrapper = () => {
   };
 
   return (
-    <div>
-      <AddTodoItemForm />
-      {renderList()}
-    </div>
+    <StyledTodoWrapper>
+      <AddTodoItemForm setIsShow={setIsShow} isShow={isShow} />
+      {isShow && renderList()}
+      <TodoFilterBar />
+    </StyledTodoWrapper>
   );
 };
