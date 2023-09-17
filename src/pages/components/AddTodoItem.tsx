@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { TodoService } from '@api/service/todoService';
 import { useUpdate } from '@store/todoContext';
 import { Todo } from '@core/models/todo';
-import { ArrowIcon } from '@theme/icons';
+import { ArrowIcon } from '@components/icons';
 import styled from '@emotion/styled';
 
 const MIN_TITLE_LENGTH = 5;

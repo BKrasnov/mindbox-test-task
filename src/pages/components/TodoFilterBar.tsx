@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { AppButtonTabs } from '@components/AppButtonTabs';
-import styled from '@emotion/styled';
 import { useTodos } from '@hooks/useTodos';
 import { useStateSelector, TodoFilterType } from '@store/todoContext';
-import { useEffect } from 'react';
+import styled from '@emotion/styled';
 
 const getPluralForm = (count: number) => {
   if (count === 1) {

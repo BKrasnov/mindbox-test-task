@@ -1,6 +1,6 @@
 import { Todo } from '@core/models/todo';
-import styled from '@emotion/styled';
 import { useStateSelector } from '@store/todoContext';
+import styled from '@emotion/styled';
 
 interface TodoItemProps {
   id: Todo['id'];

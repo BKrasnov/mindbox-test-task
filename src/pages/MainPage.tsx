@@ -1,11 +1,9 @@
-import { useStateSelector } from '@store/todoContext';
-import { TodoContext } from './components/TodoContext';
 import { useEffect, useState } from 'react';
-import { TodoListItems } from './components/TodoListItems';
-import { AddTodoItemForm } from './components/AddTodoItem';
-import { StyledTodoWrapper } from './styled';
-import { TodoFilterBar } from './components/TodoFilterBar';
+import { useStateSelector } from '@store/todoContext';
+import { AddTodoItemForm, TodoContext, TodoListItems, TodoFilterBar } from './components';
 import { useTodos } from '@hooks/useTodos';
+
+import styled from '@emotion/styled';
 
 export const MainPage = () => {
   return (
@@ -47,3 +45,13 @@ const AppTodoWrapper = () => {
     </StyledTodoWrapper>
   );
 };
+
+export const StyledTodoWrapper = styled.div((props) => ({
+  minWidth: '425px',
+  width: '70%',
+  backgroundColor: props.theme.colors.primaryColor,
+  padding: '0.5rem',
+  boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
+  margin: '0 auto',
+  marginTop: '2vh',
+}));
