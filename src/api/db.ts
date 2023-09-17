@@ -4,6 +4,7 @@ import { Todo } from '@core/todo';
 // Библиотека для работы с IndexedDb. Давно хотел поработать с IndexedDB, поэтому решил попробовать)
 
 const DATABASE_CONFIG = {
+  name: 'todosDatabase',
   version: 1,
   stores: {
     todos: '++id, title, isCompleted', // Первичный ключ и индексированные реквизиты для Todo.
@@ -14,7 +15,7 @@ export class TodoDbDexie extends Dexie {
   public readonly todos!: Table<Todo>;
 
   constructor() {
-    super('todosDatabase');
+    super(DATABASE_CONFIG.name);
     this.configureDatabase();
   }
 

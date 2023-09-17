@@ -21,8 +21,23 @@ export namespace TodoService {
     }
   }
 
-  export function updateToCompletedTodo(id: string, updateData: Partial<Omit<Todo, 'id'>>) {
-    console.log(id, updateData);
+  export async function updateTodo(id: string, updateData: Partial<Omit<Todo, 'id'>>) {
+    try {
+      const todo = await db.todos.get(id);
+
+      if (todo) {
+        const updatedTodo: Todo = {
+          ...todo,
+          ...updateData,
+        };
+
+        await db.todos.put(updatedTodo);
+      } else {
+        throw Error(`Todo with ID ${id} not found`);
+      }
+    } catch (error) {
+      throw Error(`Failed to update todo with ID ${id}: ${error}`);
+    }
   }
 
   /** Удалить завершенные задачи. */
