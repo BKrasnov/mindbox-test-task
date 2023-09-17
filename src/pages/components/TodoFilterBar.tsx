@@ -1,6 +1,6 @@
 import { AppButtonTabs } from '@components/AppButtonTabs';
 import styled from '@emotion/styled';
-import { useLoadTodos } from '@hooks/useLoadTodos';
+import { useTodos } from '@hooks/useTodos';
 import { useStateSelector, TodoFilterType } from '@store/todoContext';
 import { useEffect } from 'react';
 
@@ -20,7 +20,7 @@ export const TodoFilterBar = () => {
     filter: state.filter,
   }));
 
-  const { loadTodos, update } = useLoadTodos();
+  const { loadTodos, deleteCompletedTodos, update } = useTodos();
 
   const itemsActive = Object.values(items).filter((item) => !item.isCompleted);
 
@@ -31,6 +31,10 @@ export const TodoFilterBar = () => {
     update({
       filter,
     });
+  };
+
+  const handleDeleteChange = () => {
+    deleteCompletedTodos();
   };
 
   useEffect(() => {
@@ -48,7 +52,7 @@ export const TodoFilterBar = () => {
         <AppButtonTabs text={'Активные'} onClick={() => handleFilterChange('Active')} />
         <AppButtonTabs text={'Завершенные'} onClick={() => handleFilterChange('Completed')} />
       </StyledTabs>
-      <AppButtonTabs text={'Очистить завершенные'}></AppButtonTabs>
+      <AppButtonTabs text={'Очистить завершенные'} onClick={() => handleDeleteChange()}></AppButtonTabs>
     </StyledTodoFilterBar>
   );
 };
