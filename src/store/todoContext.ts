@@ -3,7 +3,7 @@ import { Todo } from '@core/models/todo';
 
 export type TodoFilterValuesType = 'all' | 'active' | 'completed';
 
-interface TodoState {
+export interface TodoState {
   itemsMap: Record<string, Todo>;
   itemIds: Todo['id'][];
   itemsActiveCount: number;
