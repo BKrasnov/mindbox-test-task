@@ -20,7 +20,7 @@ export const TodoItem = ({ id, handleDoneChange }: TodoItemProps) => {
   return (
     <StyledTodoItem key={id}>
       <StyledInput type="checkbox" checked={item.isCompleted} onChange={() => handleDoneChange(item.id)} />
-      {item.title}
+      <StyledTitle isCompleted={item.isCompleted}>{item.title}</StyledTitle>
     </StyledTodoItem>
   );
 };
@@ -35,3 +35,7 @@ export const StyledTodoItem = styled.li({
   padding: '0.7rem',
   gap: '0.7rem',
 });
+
+export const StyledTitle = styled.span(({ isCompleted }: { isCompleted: boolean }) => ({
+  textDecoration: isCompleted ? 'line-through' : 'none', // Добавляем перечеркивание, если isCompleted равно true
+}));
