@@ -27,11 +27,11 @@ const AppTodoWrapper = () => {
 
   const renderList = () => {
     if (status === 'init' || status === 'loading') {
-      return 'Loading...';
+      return 'Загрузка...';
     }
 
     if (status === 'error') {
-      return 'Error happened';
+      return 'Неизвестная ошибка';
     }
 
     return <TodoListItems />;
@@ -41,7 +41,7 @@ const AppTodoWrapper = () => {
     <StyledTodoWrapper>
       <AddTodoItemForm setIsShow={setIsShow} isShow={isShow} />
       {isShow && renderList()}
-      <TodoFilterBar />
+      <TodoFilterBar isShow={isShow} />
     </StyledTodoWrapper>
   );
 };

@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { AppButtonTabs } from '@components/AppButtonTabs';
 import { useTodos } from '@hooks/useTodos';
-import { useStateSelector, TodoFilterType } from '@store/todoContext';
+import { useStateSelector, TodoFilterValuesType } from '@store/todoContext';
 import styled from '@emotion/styled';
 
 const getPluralForm = (count: number) => {
@@ -14,20 +14,21 @@ const getPluralForm = (count: number) => {
   }
 };
 
-export const TodoFilterBar = () => {
-  const { items, filter } = useStateSelector((state) => ({
-    items: state.itemsMap,
+interface TodoFilterBarProps {
+  isShow: boolean;
+}
+
+export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
+  const { itemsActiveCount, filter } = useStateSelector((state) => ({
+    itemsActiveCount: state.itemsActiveCount,
     filter: state.filter,
   }));
 
   const { loadTodos, deleteCompletedTodos, update } = useTodos();
 
-  const itemsActive = Object.values(items).filter((item) => !item.isCompleted);
+  const pluralForm = getPluralForm(itemsActiveCount);
 
-  const activeTasksCount = itemsActive.length;
-  const pluralForm = getPluralForm(activeTasksCount);
-
-  const handleFilterChange = (filter: TodoFilterType) => {
+  const handleFilterChange = (filter: TodoFilterValuesType) => {
     update({
       filter,
     });
@@ -45,14 +46,18 @@ export const TodoFilterBar = () => {
   return (
     <StyledTodoFilterBar>
       <StyledActiveTask>
-        {activeTasksCount} {pluralForm}
+        {itemsActiveCount} {pluralForm}
       </StyledActiveTask>
       <StyledTabs>
-        <AppButtonTabs text={'Все'} onClick={() => handleFilterChange('All')} />
-        <AppButtonTabs text={'Активные'} onClick={() => handleFilterChange('Active')} />
-        <AppButtonTabs text={'Завершенные'} onClick={() => handleFilterChange('Completed')} />
+        <AppButtonTabs isDisabled={!isShow} text={'Все'} onClick={() => handleFilterChange('all')} />
+        <AppButtonTabs isDisabled={!isShow} text={'Активные'} onClick={() => handleFilterChange('active')} />
+        <AppButtonTabs isDisabled={!isShow} text={'Завершенные'} onClick={() => handleFilterChange('completed')} />
       </StyledTabs>
-      <AppButtonTabs text={'Очистить завершенные'} onClick={() => handleDeleteChange()}></AppButtonTabs>
+      <AppButtonTabs
+        isDisabled={!isShow}
+        text={'Очистить завершенные'}
+        onClick={() => handleDeleteChange()}
+      ></AppButtonTabs>
     </StyledTodoFilterBar>
   );
 };
