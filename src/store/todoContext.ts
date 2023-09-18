@@ -11,7 +11,7 @@ export interface TodoState {
   filter: TodoFilterValuesType;
 }
 
-const initialState: TodoState = {
+export const initialState: TodoState = {
   itemsMap: {},
   itemIds: [],
   itemsActiveCount: 0,
@@ -21,4 +21,4 @@ const initialState: TodoState = {
 
 const { Provider: AppProvider, useStateSelector, useUpdate } = createOptimizedContext<TodoState>();
 
-export { AppProvider, useStateSelector, useUpdate, initialState };
+export { AppProvider, useStateSelector, useUpdate };
