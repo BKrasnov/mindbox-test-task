@@ -8,7 +8,10 @@ interface TodoItemProps {
 }
 
 export const TodoItem = ({ id, handleDoneChange }: TodoItemProps) => {
-  const item = useStateSelector((state) => state.itemsMap[id]);
+  const { item } = useStateSelector((state) => ({
+    item: state.itemsMap[id],
+    filter: state.filter,
+  }));
 
   if (!item) {
     return null;

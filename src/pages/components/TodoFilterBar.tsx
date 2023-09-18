@@ -19,14 +19,18 @@ interface TodoFilterBarProps {
 }
 
 export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
-  const { itemsActiveCount, filter } = useStateSelector((state) => ({
-    itemsActiveCount: state.itemsActiveCount,
+  const { items, filter, itemsActiveCount } = useStateSelector((state) => ({
+    items: state.itemsMap,
     filter: state.filter,
+    itemsActiveCount: state.itemsActiveCount,
   }));
 
   const { loadTodos, deleteCompletedTodos, update } = useTodos();
 
-  const pluralForm = getPluralForm(itemsActiveCount);
+  const todosActiveCount =
+    filter !== 'completed' ? Object.values(items).filter((item) => !item.isCompleted).length : itemsActiveCount;
+
+  const pluralForm = getPluralForm(todosActiveCount);
 
   const handleFilterChange = (filter: TodoFilterValuesType) => {
     update({
@@ -46,7 +50,7 @@ export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
   return (
     <StyledTodoFilterBar>
       <StyledActiveTask>
-        {itemsActiveCount} {pluralForm}
+        {todosActiveCount} {pluralForm}
       </StyledActiveTask>
       <StyledTabs>
         <AppButtonTabs isDisabled={!isShow} text={'Все'} onClick={() => handleFilterChange('all')} />

@@ -16,7 +16,6 @@ export const useTodos = () => {
     update({ status: 'loading' });
     const itemsMap: Record<string, Todo> = {};
     const itemIds: Todo['id'][] = [];
-    /** Можно посчитать и через reduce, но зачем лишний раз бежать по циклу? */
     try {
       const completedFilter = FILTERS[filter || 'all'];
       const todos = await TodoService.getTodos(completedFilter);
@@ -24,7 +23,6 @@ export const useTodos = () => {
       todos.forEach((item) => {
         itemIds.push(item.id);
         itemsMap[item.id] = item;
-        itemsActiveCount;
       });
       update({
         status: 'success',
