@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 interface AppButtonTabsProps {
   text: string;
   onClick?: () => void;
+  isDisabled?: boolean;
 }
 
 const StyledButton = styled.button((props) => ({
@@ -14,8 +15,16 @@ const StyledButton = styled.button((props) => ({
   ':hover': {
     border: '1px solid grey',
   },
+  ':disabled': {
+    opacity: 0.6,
+    cursor: 'not-allowed',
+  },
 }));
 
-export const AppButtonTabs: React.FC<AppButtonTabsProps> = ({ text, onClick }) => {
-  return <StyledButton onClick={onClick}>{text}</StyledButton>;
+export const AppButtonTabs: React.FC<AppButtonTabsProps> = ({ text, onClick, isDisabled }) => {
+  return (
+    <StyledButton disabled={isDisabled} onClick={onClick}>
+      {text}
+    </StyledButton>
+  );
 };

@@ -1,24 +1,25 @@
-import { useUpdate, TodoFilterType } from '@store/todoContext';
+import { useUpdate, TodoFilterValuesType } from '@store/todoContext';
 import { TodoService } from '@api/service/todoService';
 import { Todo } from '@core/models/todo';
 
 const FILTERS = {
-  All: undefined,
-  Active: false,
-  Completed: true,
+  all: undefined,
+  active: false,
+  completed: true,
 };
 
 /** Хук для получения loadTodos function. */
 export const useTodos = () => {
   const update = useUpdate();
 
-  async function loadTodos(filter?: TodoFilterType) {
+  async function loadTodos(filter?: TodoFilterValuesType) {
     update({ status: 'loading' });
     const itemsMap: Record<string, Todo> = {};
     const itemIds: Todo['id'][] = [];
     try {
-      const completedFilter = FILTERS[filter || 'All'];
+      const completedFilter = FILTERS[filter || 'all'];
       const todos = await TodoService.getTodos(completedFilter);
+      const itemsActiveCount = await TodoService.getIsActiveTodos();
       todos.forEach((item) => {
         itemIds.push(item.id);
         itemsMap[item.id] = item;
@@ -27,6 +28,7 @@ export const useTodos = () => {
         status: 'success',
         itemIds,
         itemsMap,
+        itemsActiveCount,
       });
     } catch (error) {
       console.error(error);

@@ -57,4 +57,14 @@ export namespace TodoService {
       throw Error(`Failed to delete completed todos: ${error}`);
     }
   }
+
+  /** Получить количество активных todo. */
+  export async function getIsActiveTodos(): Promise<number> {
+    try {
+      const activeTodos = await getTodos(false);
+      return activeTodos.length;
+    } catch (error) {
+      throw Error(`Failed to count incomplete todos: ${error}`);
+    }
+  }
 }

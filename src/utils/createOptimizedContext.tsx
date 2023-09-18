@@ -47,6 +47,7 @@ export function createOptimizedContext<T>() {
   const Context = createContext<Store<T> | null>(null);
 
   const Provider = ({ initialState, children }: { initialState: T; children: ReactNode }) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const store = useMemo(() => new Store(initialState), []);
 
     return <Context.Provider value={store}>{children}</Context.Provider>;

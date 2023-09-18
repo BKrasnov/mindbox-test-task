@@ -1,22 +1,24 @@
 import { createOptimizedContext } from '@utils/createOptimizedContext';
 import { Todo } from '@core/models/todo';
 
-export type TodoFilterType = 'All' | 'Active' | 'Completed';
+export type TodoFilterValuesType = 'all' | 'active' | 'completed';
 
-interface TodoState {
+export interface TodoState {
   itemsMap: Record<string, Todo>;
   itemIds: Todo['id'][];
+  itemsActiveCount: number;
   status: 'init' | 'loading' | 'error' | 'success';
-  filter: TodoFilterType;
+  filter: TodoFilterValuesType;
 }
 
-const initialState: TodoState = {
+export const initialState: TodoState = {
   itemsMap: {},
   itemIds: [],
+  itemsActiveCount: 0,
   status: 'init',
-  filter: 'All',
+  filter: 'all',
 };
 
 const { Provider: AppProvider, useStateSelector, useUpdate } = createOptimizedContext<TodoState>();
 
-export { AppProvider, useStateSelector, useUpdate, initialState };
+export { AppProvider, useStateSelector, useUpdate };
