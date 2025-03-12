@@ -1,7 +1,7 @@
 import { db } from '@api/db';
-import { TodoMapper } from '@core/mapper/TodoMapper';
-import { PartialTodoWithoutId, Todo } from '@core/models/todo';
-import { IS_COMPLETED_TODO, IS_NOT_COMPLETED_TODO } from '@core/models/todoIndexedDb';
+import { TodoMapper } from '@entity/todo';
+import { PartialTodoWithoutId, Todo } from '@entity/todo';
+import { IS_COMPLETED_TODO, IS_NOT_COMPLETED_TODO } from '@api/service/todoDto';
 
 export namespace TodoService {
   /** Получить задачи. */

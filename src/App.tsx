@@ -3,6 +3,8 @@ import { AppLayout } from '@components/AppLayout';
 import { MainPage } from '@pages/MainPage';
 import { theme } from '@theme/index';
 
+import './global.css'
+
 const App = () => {
   return (
     <ThemeProvider theme={theme as Theme}>

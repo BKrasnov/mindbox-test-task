@@ -1,9 +1,9 @@
-import { TodoMapper } from '@core/mapper/TodoMapper';
-import { PartialTodoWithoutId } from '@core/models/todo';
-import { TodoIndexedDb, IS_COMPLETED_TODO, IS_NOT_COMPLETED_TODO } from '@core/models/todoIndexedDb';
+import { TodoMapper } from '@entity/todo';
+import { PartialTodoWithoutId } from '@entity/todo';
 import { v4 as uuidv4 } from 'uuid';
+import { IS_COMPLETED_TODO, IS_NOT_COMPLETED_TODO, TodoDto } from '@api/service/todoDto';
 
-const todoIndexedDbMock: TodoIndexedDb = {
+const todoIndexedDbMock: TodoDto = {
   id: uuidv4(),
   title: 'Поиграть',
   isCompleted: IS_COMPLETED_TODO,

@@ -1,9 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { TodoService } from '@api/service/todoService';
-import { useUpdate } from '@store/todoContext';
-import { Todo } from '@core/models/todo';
-import { ArrowIcon } from '@components/icons';
+import { todoModel, Todo } from '@entity/todo';
+import { ArrowIcon } from '@shared/assets/icons';
 import styled from '@emotion/styled';
 
 const MIN_TITLE_LENGTH = 5;
@@ -15,9 +14,9 @@ interface AddTodoItemFormProps {
 
 export const AddTodoItemForm: FC<AddTodoItemFormProps> = ({ setIsShow, isShow }) => {
   const [title, setTitle] = useState('');
-  const update = useUpdate();
+  const update = todoModel.hooks.useUpdate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     if (!title) {
@@ -34,8 +33,6 @@ export const AddTodoItemForm: FC<AddTodoItemFormProps> = ({ setIsShow, isShow })
       return {
         ...state,
         itemsMap: { ...state.itemsMap, [todoItem.id]: todoItem },
-        // Сортируется по ID. Да, костыльно, но изначально не предполагалось сортировать.
-        // Сделал, так как IndexedDb автоматически возращает отсортированную.
         itemIds: [...state.itemIds, todoItem.id].sort(),
       };
     });
@@ -43,18 +40,23 @@ export const AddTodoItemForm: FC<AddTodoItemFormProps> = ({ setIsShow, isShow })
     setTitle('');
   };
 
+  const handleToggleOpenClick = () => {
+    setIsShow((prev) => !prev);
+  };
+
   return (
     <StyledAddTodoItemForm>
-      <div onClick={() => setIsShow((prev) => !prev)}>
-        <ArrowIcon isShow={isShow} />
-      </div>
+      <ArrowIcon
+        onClick={handleToggleOpenClick}
+        position={isShow ? 'bottom' : 'top'}
+      />
       <form onSubmit={handleSubmit}>
         <StyledInput
-          type="text"
+          type='text'
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           minLength={MIN_TITLE_LENGTH}
-          placeholder="Что нужно сделать?"
+          placeholder='Что нужно сделать?'
         />
       </form>
     </StyledAddTodoItemForm>

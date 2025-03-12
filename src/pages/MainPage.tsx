@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useStateSelector } from '@store/todoContext';
+import { todoModel } from '@entity/todo';
 import { AddTodoItemForm, TodoContext, TodoListItems, TodoFilterBar } from './components';
-import { useTodos } from '@hooks/useTodos';
 
 import styled from '@emotion/styled';
 
@@ -16,9 +15,9 @@ export const MainPage = () => {
 const AppTodoWrapper = () => {
   const [isShow, setIsShow] = useState(true);
 
-  const status = useStateSelector((state) => state.status);
+  const status = todoModel.hooks.useStateSelector((state) => state.status);
 
-  const { loadTodos } = useTodos();
+  const { loadTodos } = todoModel.hooks.useTodos();
 
   useEffect(() => {
     loadTodos();
@@ -46,10 +45,10 @@ const AppTodoWrapper = () => {
   );
 };
 
-export const StyledTodoWrapper = styled.div((props) => ({
+export const StyledTodoWrapper = styled.div(({ theme }) => ({
   minWidth: '425px',
   width: '70%',
-  backgroundColor: props.theme.colors.primaryColor,
+  backgroundColor: theme.colors.primaryColor,
   padding: '0.5rem',
   boxShadow: '2px 2px 5px rgba(0, 0, 0, 0.2)',
   margin: '0 auto',

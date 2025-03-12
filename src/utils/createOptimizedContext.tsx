@@ -1,9 +1,7 @@
 import { createContext, ReactNode, useMemo, useContext, useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
-// From https://www.youtube.com/watch?v=mj5lGMGyfD4
-// Интересно было сделать через Context, а не через дефолтные передачи в пропсы.
-
+/** @docs https://www.youtube.com/watch?v=mj5lGMGyfD4 */
 class Store<T> {
   private subscriptions: (() => void)[] = [];
   private state: T;

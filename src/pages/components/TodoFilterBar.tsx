@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
-import { AppButtonTabs } from '@components/AppButtonTabs';
-import { useTodos } from '@hooks/useTodos';
-import { useStateSelector, TodoFilterValuesType } from '@store/todoContext';
+import { AppFilterButton } from '@components/AppFilterButton';
+import { todoModel, TodoFilterValuesType } from '@entity/todo';
 import styled from '@emotion/styled';
 
 const getPluralForm = (count: number) => {
@@ -19,23 +18,26 @@ interface TodoFilterBarProps {
 }
 
 export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
-  const { items, filter, itemsActiveCount } = useStateSelector((state) => ({
+  const { items, filter: currentFilter, itemsActiveCount } = todoModel.hooks.useStateSelector((state) => ({
     items: state.itemsMap,
     filter: state.filter,
     itemsActiveCount: state.itemsActiveCount,
   }));
+  console.log('TodoFilterBar')
 
-  const { loadTodos, deleteCompletedTodos, update } = useTodos();
+  const { loadTodos, deleteCompletedTodos, update } = todoModel.hooks.useTodos();
 
   const todosActiveCount =
-    filter !== 'completed' ? Object.values(items).filter((item) => !item.isCompleted).length : itemsActiveCount;
+  currentFilter !== 'completed' ? Object.values(items).filter(({ isCompleted }) => !isCompleted).length : itemsActiveCount;
 
   const pluralForm = getPluralForm(todosActiveCount);
 
-  const handleFilterChange = (filter: TodoFilterValuesType) => {
-    update({
-      filter,
-    });
+  const handleFilterChange = (filter: TodoFilterValuesType) => () => {
+    if(filter !== currentFilter) {
+      update({
+        filter,
+      });
+    }
   };
 
   const handleDeleteChange = () => {
@@ -43,9 +45,9 @@ export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
   };
 
   useEffect(() => {
-    loadTodos(filter);
+    loadTodos(currentFilter);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
+  }, [currentFilter]);
 
   return (
     <StyledTodoFilterBar>
@@ -53,15 +55,27 @@ export const TodoFilterBar: FC<TodoFilterBarProps> = ({ isShow }) => {
         {todosActiveCount} {pluralForm}
       </StyledActiveTask>
       <StyledTabs>
-        <AppButtonTabs isDisabled={!isShow} text={'Все'} onClick={() => handleFilterChange('all')} />
-        <AppButtonTabs isDisabled={!isShow} text={'Активные'} onClick={() => handleFilterChange('active')} />
-        <AppButtonTabs isDisabled={!isShow} text={'Завершенные'} onClick={() => handleFilterChange('completed')} />
+        <AppFilterButton
+          disabled={!isShow}
+          text='Все'
+          onClick={handleFilterChange('all')}
+        />
+        <AppFilterButton
+          disabled={!isShow}
+          text='Активные'
+          onClick={handleFilterChange('active')}
+        />
+        <AppFilterButton
+          disabled={!isShow}
+          text='Завершенные'
+          onClick={handleFilterChange('completed')}
+        />
       </StyledTabs>
-      <AppButtonTabs
-        isDisabled={!isShow}
+      <AppFilterButton
+        disabled={!isShow}
         text={'Очистить завершенные'}
         onClick={() => handleDeleteChange()}
-      ></AppButtonTabs>
+      ></AppFilterButton>
     </StyledTodoFilterBar>
   );
 };

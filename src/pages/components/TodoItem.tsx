@@ -1,5 +1,4 @@
-import { Todo } from '@core/models/todo';
-import { useStateSelector } from '@store/todoContext';
+import { todoModel, Todo } from '@entity/todo';
 import styled from '@emotion/styled';
 
 interface TodoItemProps {
@@ -8,19 +7,16 @@ interface TodoItemProps {
 }
 
 export const TodoItem = ({ id, handleDoneChange }: TodoItemProps) => {
-  const { item } = useStateSelector((state) => ({
-    item: state.itemsMap[id],
-    filter: state.filter,
-  }));
-
-  if (!item) {
-    return null;
-  }
+  const { id: itemId, isCompleted, title } = todoModel.hooks.useStateSelector((state) => state.itemsMap[id]);
 
   return (
     <StyledTodoItem key={id}>
-      <StyledInput type="checkbox" checked={item.isCompleted} onChange={() => handleDoneChange(item.id)} />
-      <StyledTitle isCompleted={item.isCompleted}>{item.title}</StyledTitle>
+      <StyledInput
+        type='checkbox'
+        checked={isCompleted}
+        onChange={() => handleDoneChange(itemId)}
+      />
+      <StyledTitle isCompleted={isCompleted}>{title}</StyledTitle>
     </StyledTodoItem>
   );
 };
@@ -37,5 +33,5 @@ export const StyledTodoItem = styled.li({
 });
 
 export const StyledTitle = styled.span(({ isCompleted }: { isCompleted: boolean }) => ({
-  textDecoration: isCompleted ? 'line-through' : 'none', // Добавляем перечеркивание, если isCompleted равно true
+  textDecoration: isCompleted ? 'line-through' : 'none',
 }));

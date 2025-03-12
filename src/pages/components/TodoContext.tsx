@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { AppProvider, initialState } from '@store/todoContext';
+import { TodoProvider, todoModel } from '@entity/todo';
 
 interface TodoContextProps {
   children: ReactNode;
 }
 
 export const TodoContext: FC<TodoContextProps> = ({ children }) => {
-  return <AppProvider initialState={initialState}>{children}</AppProvider>;
+  return <TodoProvider initialState={todoModel.constants.initialState}>{children}</TodoProvider>;
 };

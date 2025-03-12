@@ -1,11 +1,10 @@
-import { useStateSelector, useUpdate } from '@store/todoContext';
+import { todoModel, Todo } from '@entity/todo';
 import { TodoItem } from './TodoItem';
-import { Todo } from '@core/models/todo';
 import { TodoService } from '@api/service/todoService';
 
 export const TodoListItems = () => {
-  const itemsIds = useStateSelector((state) => state.itemIds);
-  const update = useUpdate();
+  const itemsIds = todoModel.hooks.useStateSelector((state) => state.itemIds);
+  const update = todoModel.hooks.useUpdate();
 
   const handleDoneChange = (itemId: Todo['id']) => {
     update((state) => {

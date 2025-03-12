@@ -5,7 +5,6 @@ interface AppLayoutProps {
   children: ReactNode;
 }
 
-/** Компонент макета приложения. */
 export const AppLayout: FC<AppLayoutProps> = ({ children }) => (
   <>
     <AppHeader />

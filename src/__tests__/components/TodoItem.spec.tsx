@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { v4 as uuidv4 } from 'uuid';
-import { Todo } from '@core/models/todo';
+import { Todo } from '@entity/todo';
 import { TodoContext, TodoItem } from '@pages/components';
-import { AppProvider, TodoState } from '@store/todoContext';
+import { TodoProvider, TodoState } from '@entity/todo';
 
 const todo = new Todo({
   id: uuidv4(),
@@ -24,9 +24,9 @@ export const initialState: TodoState = {
 describe('TodoItem', () => {
   it('Рендерится корректно', () => {
     render(
-      <AppProvider initialState={initialState}>
+      <TodoProvider initialState={initialState}>
         <TodoItem id={todo.id} handleDoneChange={() => {}} />
-      </AppProvider>
+      </TodoProvider>
     );
     expect(screen.getByText('Test Todo')).toBeInTheDocument();
     expect(screen.getByRole('checkbox')).toBeInTheDocument();
